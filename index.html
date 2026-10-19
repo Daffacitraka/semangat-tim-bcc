@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Semangat Daffa Ikbar & Tim BCC!!</title>
+<meta name="description" content="Buat Daffa Ikbar & tim BCC Pharfest UI. Semangat, kalian pasti bisa!">
+<meta property="og:title" content="Semangat Daffa Ikbar & Tim BCC!!">
+<meta property="og:description" content="Case file khusus buat kalian. Buka ya!">
+<meta name="theme-color" content="#0b1b2b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1b2b;--bg2:#10263b;--panel:#132e47;--line:#24486a;
+  --ink:#eaf3fb;--mute:#93abc2;--teal:#2fd3b5;--teal2:#16a58c;
+  --amber:#ffc35a;--coral:#ff7a6b;--lav:#a99bff;--paper:#f6f1e6;--paperInk:#2a2a2a;
+  --r:18px;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden;min-height:100vh}
+body.locked{overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:0}
+input{font-family:inherit}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(47,211,181,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(47,211,181,.06) 1px,transparent 1px);
+  background-size:32px 32px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%)}
+.glow{position:fixed;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.22;z-index:0;pointer-events:none}
+.glow.a{background:var(--teal);top:-160px;left:-160px;animation:drift 18s ease-in-out infinite}
+.glow.b{background:var(--lav);bottom:-200px;right:-180px;animation:drift 22s ease-in-out infinite reverse}
+@keyframes drift{50%{transform:translate(60px,40px)}}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 18px 60px}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 18px;background:rgba(11,27,43,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;color:var(--mute);transform:translateY(-100%);transition:transform .5s}
+.topbar.show{transform:none}
+.topbar b{color:var(--teal)}
+.navdots{display:flex;gap:6px}
+.navdots a{width:9px;height:9px;border-radius:50%;background:var(--line);display:block;transition:.3s}
+.navdots a.on{background:var(--teal);box-shadow:0 0 0 3px rgba(47,211,181,.25)}
+.scrollbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--amber));z-index:30;width:0}
+
+/* intro case file */
+#intro{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#16314d,#07121d);
+  transition:opacity .8s,visibility .8s;padding:20px}
+#intro.gone{opacity:0;visibility:hidden}
+.folderWrap{perspective:1200px;cursor:pointer;width:min(340px,86vw);text-align:center}
+.folder{position:relative;width:100%;aspect-ratio:4/3;margin:0 auto}
+.folder .back{position:absolute;inset:0;background:#c99a4b;border-radius:6px 14px 10px 10px}
+.folder .back:before{content:"";position:absolute;top:-16px;left:0;width:42%;height:22px;background:#c99a4b;border-radius:8px 8px 0 0}
+.folder .sheet{position:absolute;left:7%;right:7%;top:8%;bottom:6%;background:var(--paper);border-radius:4px;transition:transform .9s cubic-bezier(.2,.8,.2,1);
+  color:var(--paperInk);font-family:var(--mono);font-size:11px;text-align:left;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.folder .sheet p{border-bottom:1px dashed #c8bfae;padding:4px 0}
+.folder .front{position:absolute;inset:14% 0 0 0;background:linear-gradient(180deg,#e3b464,#d3a453);border-radius:6px 6px 10px 10px;transform-origin:bottom;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.front .lbl{font-family:var(--mono);color:#5a3e10;font-size:12px;letter-spacing:.18em}
+.front .ttl{font-weight:800;color:#3e2a07;font-size:22px;margin-top:4px}
+.stamp{position:absolute;right:10%;bottom:14%;border:3px solid #c0392b;color:#c0392b;font-family:var(--mono);font-weight:600;font-size:13px;
+  padding:3px 8px;transform:rotate(-12deg);border-radius:4px;opacity:.85;letter-spacing:.1em}
+.folderWrap.open .front{transform:rotateX(-78deg)}
+.folderWrap.open .sheet{transform:translateY(-38%)}
+.introHint{margin-top:26px;font-family:var(--mono);font-size:13px;color:var(--mute);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.introTag{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.2em;margin-bottom:28px}
+
+/* sections */
+section{padding:64px 0 10px;scroll-margin-top:50px}
+.eyebrow{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow:after{content:"";flex:1;height:1px;background:var(--line)}
+h2{font-size:clamp(24px,5.4vw,34px);line-height:1.2;margin:10px 0 8px;font-weight:800}
+.lead{color:var(--mute);max-width:640px}
+.card{background:linear-gradient(180deg,rgba(19,46,71,.92),rgba(16,38,59,.92));border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-top:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+
+/* hero */
+#hero{min-height:calc(100vh - 40px);display:flex;flex-direction:column;justify-content:center;padding-top:40px}
+.memo{font-family:var(--mono);font-size:12px;color:var(--mute);display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin-bottom:22px;
+  border-left:3px solid var(--teal);padding-left:12px}
+.memo b{color:var(--ink);font-weight:600}
+.headline{font-size:clamp(34px,9.5vw,72px);line-height:1.05;font-weight:800;letter-spacing:-.02em;min-height:2.2em}
+.headline .hl{background:linear-gradient(90deg,var(--teal),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.caret{display:inline-block;width:.08em;height:.9em;background:var(--teal);vertical-align:-.08em;margin-left:4px;animation:blink 1s steps(1) infinite}
+.heroSub{margin-top:18px;font-size:clamp(16px,4vw,19px);color:#cfe0ee;max-width:620px;opacity:0;transition:opacity 1s .2s}
+.heroSub.in{opacity:1}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+.kpi .v{font-family:var(--mono);font-size:clamp(18px,5vw,26px);font-weight:600;color:var(--teal)}
+.kpi .k{font-size:11.5px;color:var(--mute);line-height:1.3}
+.heroBtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{background:var(--teal);color:#06281f;font-weight:700;padding:12px 18px;border-radius:12px;font-size:15px;transition:transform .15s,box-shadow .2s;
+  box-shadow:0 8px 20px rgba(47,211,181,.25)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.amber{background:var(--amber);color:#3a2800;box-shadow:0 8px 20px rgba(255,195,90,.25)}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:90;width:100%;height:100%}
+
+/* tips deck */
+.deckTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.phases{display:flex;gap:6px;flex-wrap:wrap}
+.phase{font-family:var(--mono);font-size:11.5px;padding:6px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mute);background:transparent;transition:.25s}
+.phase.on{background:var(--teal);color:#06281f;border-color:var(--teal);font-weight:600}
+.slideNo{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.deck{position:relative;margin-top:16px;min-height:330px}
+.slide{position:absolute;inset:0;background:var(--paper);color:var(--paperInk);border-radius:14px;padding:22px 20px 18px;display:flex;flex-direction:column;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .45s;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.slide.hidden{opacity:0;pointer-events:none;transform:translateX(18px) rotate(1deg)}
+.slide.left{opacity:0;pointer-events:none;transform:translateX(-18px) rotate(-1deg)}
+.slide .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#16a58c;text-transform:uppercase}
+.slide h3{font-size:21px;line-height:1.25;margin:6px 0 10px;color:#13263a}
+.slide p{font-size:15px;color:#3b3b3b}
+.slide ul{margin:10px 0 0 18px;font-size:14.5px;color:#333}
+.slide li{margin:4px 0}
+.slide .foot{margin-top:auto;padding-top:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;border-top:1px dashed #cfc5b2;font-family:var(--mono);font-size:11px;color:#8a7f6c}
+.slide .avoid{background:#fde9e5;border-left:3px solid var(--coral);padding:8px 10px;border-radius:6px;font-size:13.5px;margin-top:12px;color:#5b2a22}
+.deckCtl{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
+.deckCtl .btn{padding:10px 16px}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;flex:1}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--line);transition:.3s}
+.dots span.on{background:var(--amber);width:20px;border-radius:5px}
+.swipeHint{font-family:var(--mono);font-size:11px;color:var(--mute);text-align:center;margin-top:8px}
+
+/* checklist */
+.ckGrid{display:grid;grid-template-columns:1fr;gap:20px}
+.ringBox{display:flex;align-items:center;gap:18px}
+.ring{position:relative;width:118px;height:118px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mono)}
+.ring .pct b{font-size:26px;color:var(--teal)}
+.ring .pct small{font-size:10px;color:var(--mute)}
+.ringMsg{font-size:15px;color:#cfe0ee}
+.deadline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px;font-size:13px;color:var(--mute)}
+.deadline input{background:var(--bg2);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:10px;font-size:14px;color-scheme:dark;max-width:100%}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.countdown div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;text-align:center;padding:8px 4px}
+.countdown b{display:block;font-family:var(--mono);font-size:22px;color:var(--amber)}
+.countdown span{font-size:10.5px;color:var(--mute)}
+.ckGroup h4{font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:.12em;margin:14px 0 6px;text-transform:uppercase}
+.ck{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:.2s;user-select:none}
+.ck:hover{background:rgba(255,255,255,.03);border-color:var(--line)}
+.ck .box{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.25s}
+.ck .box svg{opacity:0;transform:scale(.4);transition:.25s}
+.ck.done .box{background:var(--teal);border-color:var(--teal)}
+.ck.done .box svg{opacity:1;transform:none}
+.ck.done .t{color:var(--mute);text-decoration:line-through}
+.ck .t{font-size:14.5px}
+.resetLink{background:none;color:var(--mute);font-size:12px;text-decoration:underline;margin-top:10px;font-family:var(--mono)}
+
+/* pill dispenser */
+.dispenser{display:flex;flex-direction:column;align-items:center;text-align:center}
+.bottle{position:relative;width:120px;height:150px;margin:6px auto 0}
+.bottle .cap{position:absolute;top:0;left:20px;right:20px;height:30px;background:#e9eef3;border-radius:8px 8px 4px 4px;transition:transform .35s}
+.bottle .body{position:absolute;top:26px;left:8px;right:8px;bottom:0;background:linear-gradient(90deg,rgba(255,195,90,.85),rgba(255,170,60,.9));border-radius:14px;overflow:hidden}
+.bottle .label{position:absolute;left:0;right:0;top:34%;background:var(--paper);color:#13263a;font-family:var(--mono);font-size:10px;padding:6px 4px;line-height:1.3}
+.bottle .label b{font-size:12px;display:block}
+.bottle.shake{animation:shake .5s}
+.bottle.shake .cap{transform:translateY(-10px) rotate(-12deg)}
+@keyframes shake{20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+.pill{display:inline-flex;width:56px;height:24px;border-radius:12px;overflow:hidden;margin:14px 0 4px;box-shadow:0 6px 14px rgba(0,0,0,.3);transform:scale(0);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.pill.pop{transform:scale(1) rotate(-14deg)}
+.pill i{flex:1}
+.quote{min-height:96px;font-size:clamp(17px,4.4vw,21px);font-weight:600;max-width:560px;margin-top:6px;transition:opacity .3s}
+.dose{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin-top:8px}
+.qBtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+
+/* game */
+.gameHud{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:13px;flex-wrap:wrap}
+.gameHud b{color:var(--teal)}
+.arena{position:relative;height:360px;margin-top:12px;border-radius:14px;background:
+  linear-gradient(rgba(47,211,181,.05) 1px,transparent 1px) 0 0/100% 36px,var(--bg2);border:1px solid var(--line);overflow:hidden;touch-action:manipulation}
+.drop{position:absolute;top:-50px;padding:7px 11px;border-radius:99px;font-size:13px;font-weight:700;white-space:nowrap;cursor:pointer;user-select:none;
+  will-change:transform;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.drop.good{background:var(--teal);color:#06281f}
+.drop.bad{background:var(--coral);color:#3d0e08}
+.drop.hit{transition:transform .25s,opacity .25s;opacity:0}
+.float{position:absolute;font-family:var(--mono);font-weight:700;pointer-events:none;animation:up .8s forwards}
+@keyframes up{to{transform:translateY(-40px);opacity:0}}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:rgba(11,27,43,.88);gap:10px;z-index:3}
+.overlay h3{font-size:20px}
+.overlay p{color:var(--mute);font-size:14px;max-width:360px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:12.5px;margin-top:4px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.breathe{display:flex;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap}
+.bCircle{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#06281f;transform:scale(.7);transition:transform 4s ease-in-out;flex:none;text-align:center;line-height:1.2}
+.bCircle.inhale{transform:scale(1.05)}
+.bTxt{flex:1;min-width:200px;color:#cfe0ee;font-size:14.5px}
+
+/* closing */
+.letter{background:var(--paper);color:var(--paperInk);border-radius:14px;padding:26px 22px;position:relative;margin-top:22px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.letter .hdr{font-family:var(--mono);font-size:11.5px;color:#7d725f;border-bottom:2px solid #13263a;padding-bottom:10px;margin-bottom:14px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.letter p{margin:10px 0;font-size:15.5px}
+.sign{font-family:'Brush Script MT','Segoe Script',cursive;font-size:30px;color:#13263a;margin-top:8px}
+.letter .stamp2{position:absolute;right:16px;top:16px;border:3px solid #16a58c;color:#16a58c;font-family:var(--mono);font-weight:600;font-size:12px;padding:4px 8px;transform:rotate(10deg);border-radius:4px}
+footer{text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--mute);padding:30px 0 10px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,200%);visibility:hidden;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;z-index:95;transition:transform .4s,visibility .4s;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+
+@media (min-width:760px){
+  main{padding:0 28px 80px}
+  .ckGrid{grid-template-columns:300px 1fr}
+  .deck{min-height:300px}
+  .card{padding:28px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body class="locked">
+<div class="scrollbar" id="scrollbar"></div>
+<div class="grid-bg"></div><div class="glow a"></div><div class="glow b"></div>
+<canvas id="confetti"></canvas>
+
+<!-- INTRO -->
+<div id="intro">
+  <div style="text-align:center">
+    <div class="introTag">KIRIMAN KHUSUS UNTUK TIM BCC</div>
+    <div class="folderWrap" id="folderWrap" role="button" tabindex="0" aria-label="Buka case file">
+      <div class="folder">
+        <div class="back"></div>
+        <div class="sheet">
+          <p><b>KEPADA:</b> Daffa Ikbar & tim</p>
+          <p><b>PERIHAL:</b> Suntikan semangat</p>
+          <p><b>STATUS:</b> Wajib dibaca</p>
+          <p><b>DOSIS:</b> 1x sebelum begadang</p>
+        </div>
+        <div class="front">
+          <div class="lbl">CASE FILE</div>
+          <div class="ttl">#BCC-SEMANGAT</div>
+          <div class="stamp">RAHASIA</div>
+        </div>
+      </div>
+    </div>
+    <div class="introHint">ketuk map-nya buat buka</div>
+  </div>
+</div>
+
+<header class="topbar" id="topbar">
+  <span><b>CASE</b>/semangat-tim-bcc</span>
+  <nav class="navdots" id="navdots">
+    <a href="#hero" aria-label="Pembuka"></a><a href="#tips" aria-label="Tips"></a><a href="#check" aria-label="Checklist"></a>
+    <a href="#pill" aria-label="Pil semangat"></a><a href="#game" aria-label="Mini game"></a><a href="#closing" aria-label="Penutup"></a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="memo">
+      <span>KEPADA</span><b>Daffa Ikbar & tim BCC Pharfest UI</b>
+      <span>DARI</span><b>Daffa</b>
+      <span>KASUS</span><b>PT Mitra Pharfest UI, fitofarmaka metabolic wellness</b>
+    </div>
+    <h1 class="headline" id="headline" aria-label="Semangat Daffa Ikbar & tim BCC!!"></h1>
+    <p class="heroSub" id="heroSub">Aku tau kalian lagi ngebut riset, ngerapihin issue tree, sama nulis executive summary. Ini aku bikinin sedikit "lampiran tambahan" buat nemenin begadang kalian: tips, checklist, pil semangat, sama game kecil buat napas sebentar.</p>
+    <div class="kpis reveal">
+      <div class="kpi"><div class="v" id="k1">0</div><div class="k">orang di tim yang aku percaya bisa</div></div>
+      <div class="kpi"><div class="v" id="k2">0%</div><div class="k">dukungan dari aku buat kalian</div></div>
+      <div class="kpi"><div class="v">&infin;</div><div class="k">kopi yang mungkin bakal habis</div></div>
+    </div>
+    <div class="heroBtns reveal">
+      <a href="#tips"><button class="btn">Lihat tips BCC</button></a>
+      <button class="btn ghost" id="confettiBtn">Tembak confetti lagi</button>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section id="tips">
+    <div class="eyebrow">01 / Tips BCC</div>
+    <h2>Deck tips kecil dari aku</h2>
+    <p class="lead">Geser kartunya atau pakai tombol. Isinya hal-hal praktis yang biasanya bikin beda antara abstrak yang "oke" sama yang bikin juri ngangguk.</p>
+    <div class="card reveal">
+      <div class="deckTop">
+        <div class="phases" id="phases"></div>
+        <div class="slideNo" id="slideNo">01 / 13</div>
+      </div>
+      <div class="deck" id="deck"></div>
+      <div class="deckCtl">
+        <button class="btn ghost" id="prevBtn" aria-label="Sebelumnya">&larr;</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn" id="nextBtn" aria-label="Berikutnya">&rarr;</button>
+      </div>
+      <div class="swipeHint">bisa di-swipe kiri/kanan juga</div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="check">
+    <div class="eyebrow">02 / Deadline tracker</div>
+    <h2>Checklist sebelum submit</h2>
+    <p class="lead">Centang yang udah beres. Progress-nya kesimpen di HP kalian, jadi aman kalau tab-nya ketutup.</p>
+    <div class="card reveal">
+      <div class="ckGrid">
+        <div>
+          <div class="ringBox">
+            <div class="ring">
+              <svg width="118" height="118" viewBox="0 0 118 118">
+                <circle cx="59" cy="59" r="50" fill="none" stroke="#24486a" stroke-width="10"/>
+                <circle id="ringArc" cx="59" cy="59" r="50" fill="none" stroke="#2fd3b5" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16" style="transition:stroke-dashoffset .6s"/>
+              </svg>
+              <div class="pct"><b id="pctTxt">0%</b><small id="cntTxt">0/0</small></div>
+            </div>
+            <div class="ringMsg" id="ringMsg">Ayo mulai dari yang paling gampang dulu.</div>
+          </div>
+          <div class="deadline">
+            <label for="dl">Deadline submit:</label>
+            <input type="datetime-local" id="dl">
+          </div>
+          <div class="countdown" id="countdown">
+            <div><b id="cdD">--</b><span>hari</span></div>
+            <div><b id="cdH">--</b><span>jam</span></div>
+            <div><b id="cdM">--</b><span>menit</span></div>
+            <div><b id="cdS">--</b><span>detik</span></div>
+          </div>
+          <button class="resetLink" id="resetCk">reset checklist</button>
+        </div>
+        <div id="ckList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILL -->
+  <section id="pill">
+    <div class="eyebrow">03 / Pil semangat</div>
+    <h2>Butuh dosis semangat?</h2>
+    <p class="lead">Karena kasusnya farmasi, semangatnya juga aku kemas jadi kapsul. Ambil satu tiap kali mulai capek.</p>
+    <div class="card reveal dispenser">
+      <div class="bottle" id="bottle">
+        <div class="cap"></div>
+        <div class="body"><div class="label"><b>SEMANGATIN</b>Kapsul 500 mg<br>Fitofarmaka hati</div></div>
+      </div>
+      <div class="pill" id="pillShape"><i style="background:#2fd3b5"></i><i style="background:#ffc35a"></i></div>
+      <div class="quote" id="quote">Ketuk tombol di bawah buat ambil kapsul pertama.</div>
+      <div class="dose" id="dose">Aturan pakai: secukupnya, boleh diulang.</div>
+      <div class="qBtns">
+        <button class="btn amber" id="pillBtn">Ambil kapsul</button>
+        <button class="btn ghost" id="copyBtn">Salin buat grup</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game">
+    <div class="eyebrow">04 / Break sebentar</div>
+    <h2>Mini game: Rapihin abstrak</h2>
+    <p class="lead">Ketuk yang hijau (bikin abstrak makin kuat), hindari yang merah (bikin juri ragu). 25 detik aja, abis itu balik kerja ya.</p>
+    <div class="card reveal">
+      <div class="gameHud">
+        <span>Skor: <b id="score">0</b></span>
+        <span>Waktu: <b id="time">25</b>s</span>
+        <span>Rekor: <b id="best">0</b></span>
+      </div>
+      <div class="arena" id="arena">
+        <div class="overlay" id="overlay">
+          <h3 id="ovTitle">Siap rapihin abstrak?</h3>
+          <p id="ovText">Hijau = +1, merah = -2. Makin lama makin cepet jatuhnya.</p>
+          <div class="legend"><span><i style="background:#2fd3b5"></i>bagus</span><span><i style="background:#ff7a6b"></i>hindari</span></div>
+          <button class="btn" id="startBtn">Mulai</button>
+        </div>
+      </div>
+      <div class="breathe">
+        <div class="bCircle" id="bCircle">tarik<br>napas</div>
+        <div class="bTxt"><b>Atau napas dulu 1 menit.</b><br><span id="bTxt">Ikutin lingkarannya: tarik napas 4 detik, buang 4 detik. Kadang ide terbaik muncul pas berhenti sebentar.</span><br>
+          <button class="btn ghost" id="breathBtn" style="margin-top:10px;padding:8px 14px;font-size:14px">Mulai napas</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="closing">
+    <div class="eyebrow">05 / Penutup</div>
+    <h2>Satu memo terakhir</h2>
+    <div class="letter reveal">
+      <div class="stamp2">APPROVED</div>
+      <div class="hdr">
+        <span>KEPADA</span><b>Daffa Ikbar & tim</b>
+        <span>DARI</span><b>Daffa</b>
+        <span>PERIHAL</span><b>Kalian udah sejauh ini</b>
+      </div>
+      <p>Ikbar & tim, apa pun hasilnya nanti, kalian udah ngelakuin hal yang nggak semua orang mau: mikirin masalah nyata industri farmasi sampai ke issue tree, regulasi, rantai pasok, sampai angka-angkanya.</p>
+      <p>Pas nulis, inget aja: juri pengen ngerti <b>masalahnya apa, solusinya apa, dan kenapa itu masuk akal</b>. Kalau tiga itu jelas, kalian udah di jalur yang bener.</p>
+      <p>Jangan lupa makan, minum air, dan tidur walaupun cuma sebentar. Otak yang istirahat itu analisnya lebih tajam. Aku dukung dari sini. Gas terus, semoga lolos dan menang!</p>
+      <div class="sign">dari Daffa</div>
+      <div class="heroBtns" style="margin-top:16px">
+        <button class="btn" id="finalBtn">Kita pasti bisa!</button>
+        <a href="#hero"><button class="btn ghost" style="color:#13263a;border-color:#cfc5b2">Balik ke atas</button></a>
+      </div>
+    </div>
+  </section>
+  <footer>dibuat dengan sepenuh hati buat tim BCC &middot; semangat terus</footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+const toast=(m)=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2200)};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- confetti ---------- */
+const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],raf=null;
+function size(){const dpr=Math.min(window.devicePixelRatio||1,2);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+size();addEventListener('resize',size);
+const colors=['#2fd3b5','#ffc35a','#ff7a6b','#a99bff','#eaf3fb'];
+function burst(n,x,y){
+  x=x??innerWidth/2;y=y??innerHeight*0.35;
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=4+Math.random()*8;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-5,r:4+Math.random()*5,c:colors[i%colors.length],rot:Math.random()*6,vr:(Math.random()-.5)*.3,life:0,shape:Math.random()<.3?'pill':'rect'})}
+  if(!raf)loop();
+}
+function loop(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.life<160&&p.y<innerHeight+40);
+  for(const p of parts){p.life++;p.vy+=.22;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.max(0,1-p.life/160);cx.fillStyle=p.c;
+    if(p.shape==='pill'){cx.beginPath();const w=p.r*2.4,h=p.r;cx.moveTo(-w/2+h/2,-h/2);cx.lineTo(w/2-h/2,-h/2);cx.arc(w/2-h/2,0,h/2,-Math.PI/2,Math.PI/2);cx.lineTo(-w/2+h/2,h/2);cx.arc(-w/2+h/2,0,h/2,Math.PI/2,Math.PI*1.5);cx.fill()}
+    else cx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);
+    cx.restore()}
+  raf=parts.length?requestAnimationFrame(loop):(cx.clearRect(0,0,innerWidth,innerHeight),null);
+}
+
+/* ---------- intro ---------- */
+let opened=false;
+function openFile(){
+  if(opened)return;opened=true;
+  $('#folderWrap').classList.add('open');
+  setTimeout(()=>{$('#intro').classList.add('gone');document.body.classList.remove('locked');$('#topbar').classList.add('show');typeHeadline()},1100);
+}
+$('#folderWrap').addEventListener('click',openFile);
+$('#folderWrap').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFile()}});
+
+/* ---------- typed headline ---------- */
+function typeHeadline(){
+  const h=$('#headline');const parts=[['Semangat ',''],['Daffa Ikbar','hl'],[' & tim BCC!!','']];
+  let pi=0,ci=0;h.innerHTML='';
+  const spans=parts.map(p=>{const s=document.createElement('span');if(p[1])s.className=p[1];h.appendChild(s);return s});
+  const caret=document.createElement('span');caret.className='caret';h.appendChild(caret);
+  (function step(){
+    if(pi>=parts.length){burst(160);setTimeout(()=>burst(90,innerWidth*.2,innerHeight*.5),300);setTimeout(()=>burst(90,innerWidth*.8,innerHeight*.5),550);
+      $('#heroSub').classList.add('in');countUp();return}
+    spans[pi].textContent+=parts[pi][0][ci++];
+    if(ci>=parts[pi][0].length){pi++;ci=0}
+    setTimeout(step,55+Math.random()*45);
+  })();
+}
+function countUp(){
+  const animate=(el,to,suf,dur)=>{const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/dur);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(f)})(t0)};
+  animate($('#k1'),100,'%',1200);animate($('#k2'),1000,'%',1600);
+}
+$('#confettiBtn').addEventListener('click',e=>burst(140,e.clientX,e.clientY));
+
+/* ---------- tips deck ---------- */
+const tips=[
+ {ph:'Pahami',tag:'Fondasi',t:'Baca case & kriteria penilaian sampai hafal',p:'Sebelum nulis apa pun, pastikan semua anggota paham pertanyaan inti kasusnya dan bobot penilaian juri.',
+  li:['Tulis ulang pertanyaan kasus dalam satu kalimat','Tandai kata kunci di case reveal dan TM','Cek tiap bagian abstrak menjawab kriteria yang mana'],av:'Langsung bikin solusi sebelum yakin masalahnya apa.'},
+ {ph:'Pahami',tag:'Struktur masalah',t:'Issue tree yang MECE',p:'Pecah masalah utama jadi cabang yang tidak tumpang tindih (mutually exclusive) tapi kalau digabung lengkap (collectively exhaustive).',
+  li:['Cabang market, regulasi, teknis, rantai pasok, finansial itu contoh pemecahan yang rapi','Tiap cabang harus bisa dijawab pakai data','Pangkas cabang yang nggak nyambung ke pertanyaan inti'],av:'Cabang yang isinya sama tapi beda nama.'},
+ {ph:'Pahami',tag:'Cara berpikir',t:'Hypothesis-driven, bukan riset tanpa arah',p:'Bikin dugaan awal soal jawabannya, lalu cari data untuk membuktikan atau membantah. Ini jauh lebih hemat waktu.',
+  li:['Tulis hipotesis per cabang issue tree','Tentukan data apa yang bisa membuktikannya','Berani ganti hipotesis kalau datanya bilang lain'],av:'Ngumpulin semua data dulu baru mikir mau dipakai buat apa.'},
+ {ph:'Analisis',tag:'Kredibilitas',t:'Setiap klaim harus ada datanya',p:'Juri BCC biasanya peka sama angka tanpa sumber. Pakai sumber yang kredibel: data pemerintah dan regulator, laporan riset atau konsultan ternama, jurnal.',
+  li:['Cantumkan sumber dan tahun di setiap angka penting','Konsisten format sitasinya','Kalau pakai asumsi, tulis jelas bahwa itu asumsi beserta dasarnya'],av:'Angka bulat yang nggak jelas asalnya.'},
+ {ph:'Analisis',tag:'Framework',t:'Framework itu alat, bukan pajangan',p:'SWOT, Porter, PESTLE, STP dan kawan-kawan cuma berguna kalau mendukung alur cerita kalian.',
+  li:['Tiap framework harus menghasilkan insight, bukan sekadar daftar','Tulis "so what"-nya di bawah tiap tabel','Lebih baik sedikit framework yang tajam daripada banyak tapi dangkal'],av:'Masukin semua framework biar keliatan lengkap.'},
+ {ph:'Analisis',tag:'Dampak',t:'Kuantifikasi dampak & finansialnya',p:'Solusi yang meyakinkan biasanya ada angkanya: potensi pasar, biaya, pendapatan, payback, atau indikator dampak lain.',
+  li:['Tunjukkan asumsi perhitungan secara transparan','Pakai skenario (pesimis, moderat, optimis) kalau ketidakpastiannya tinggi','Sambungkan angka ke tujuan perusahaan klien'],av:'Proyeksi super optimis tanpa penjelasan asumsi.'},
+ {ph:'Analisis',tag:'Feasibility',t:'Uji kelayakan solusi dari banyak sisi',p:'Buat produk farmasi, juri biasanya ngecek apakah solusinya realistis dari sisi regulasi, teknis produksi, rantai pasok, dan biaya.',
+  li:['Sebutkan tahapan regulasi yang relevan secara umum','Pikirkan risiko utama dan mitigasinya','Bikin roadmap implementasi yang masuk akal'],av:'Solusi keren yang nggak mungkin dijalankan perusahaan.'},
+ {ph:'Tulis',tag:'Executive summary',t:'Answer first: pakai pyramid principle',p:'Taruh jawaban atau rekomendasi utama di awal, lalu argumen pendukung, baru detail. Juri harus nangkep intinya dalam 30 detik pertama.',
+  li:['Kalimat pertama paragraf = pesan utamanya','Alur: masalah, solusi, alasan, dampak, implementasi','Potong kalimat yang nggak menambah argumen'],av:'Pembukaan panjang soal latar belakang umum.'},
+ {ph:'Tulis',tag:'Visual',t:'Visual yang konsisten dan gampang dibaca',p:'Lampiran yang rapi bikin juri lebih gampang percaya sama analisisnya.',
+  li:['Satu palet warna, satu jenis font, ukuran yang seragam','Judul tabel atau grafik langsung menyebut insight-nya','Rujuk lampiran dari isi teks supaya nyambung'],av:'Tiap anggota pakai gaya visual sendiri-sendiri.'},
+ {ph:'Tulis',tag:'Aturan main',t:'Patuhi format dan batas halaman',p:'Melanggar aturan teknis itu cara paling sia-sia buat kehilangan nilai.',
+  li:['Cek ulang batas halaman, font, margin, spasi, dan format file','Cek aturan penamaan file dan cara submit','Submit lebih awal, jangan mepet menit terakhir'],av:'Baru baca guideline pas mau submit.'},
+ {ph:'Tulis',tag:'Final check',t:'Proofread bareng, bukan sendirian',p:'Mata yang beda nemu kesalahan yang beda.',
+  li:['Baca keras-keras biar kalimat yang janggal ketahuan','Cek konsistensi angka antara isi dan lampiran','Cek typo, nama perusahaan, dan istilah teknis'],av:'Angka di abstrak beda sama angka di lampiran.'},
+ {ph:'Pitch',tag:'Kalau lolos',t:'Latihan pitch & simulasi Q&A',p:'Siapin dari sekarang biar nggak panik kalau lolos ke tahap berikutnya.',
+  li:['Latihan pakai timer','Saling jadi juri dan kasih pertanyaan paling susah','Siapin backup slide buat pertanyaan yang kemungkinan muncul'],av:'Hafalan kaku yang buyar pas ditanya.'},
+ {ph:'Tim',tag:'Kerja tim',t:'Bagi tugas jelas, jaga diri sendiri',p:'Tim yang solid biasanya punya pembagian tugas yang jelas dan saling jaga energi.',
+  li:['Tentukan siapa pegang bagian apa dan kapan tenggatnya','Sync singkat rutin biar alurnya tetap satu cerita','Makan, minum air, tidur cukup. Begadang terus bikin analisis jadi tumpul'],av:'Semua ngerjain semua, akhirnya nggak ada yang selesai.'}
+];
+const phaseNames=[...new Set(tips.map(t=>t.ph))];
+const deck=$('#deck'),dots=$('#dots'),phases=$('#phases');let cur=0;
+tips.forEach((t,i)=>{
+  const s=document.createElement('article');s.className='slide hidden';
+  s.innerHTML=`<div class="tag">${t.tag}</div><h3>${t.t}</h3><p>${t.p}</p><ul>${t.li.map(x=>`<li>${x}</li>`).join('')}</ul><div class="avoid"><b>Hindari:</b> ${t.av}</div><div class="foot"><span>TIP ${String(i+1).padStart(2,'0')}</span><span>Tahap: ${t.ph}</span></div>`;
+  deck.appendChild(s);
+  const d=document.createElement('span');dots.appendChild(d);
+});
+phaseNames.forEach(p=>{const b=document.createElement('button');b.className='phase';b.textContent=p;b.onclick=()=>go(tips.findIndex(t=>t.ph===p));phases.appendChild(b)});
+function fitDeck(){let m=0;deck.querySelectorAll('.slide').forEach(s=>{s.style.position='relative';s.style.inset='auto';m=Math.max(m,s.offsetHeight);s.style.position='';s.style.inset=''});deck.style.minHeight=m+'px'}
+function go(i){
+  i=(i+tips.length)%tips.length;
+  deck.querySelectorAll('.slide').forEach((s,j)=>{s.classList.toggle('hidden',j>i);s.classList.toggle('left',j<i)});
+  dots.querySelectorAll('span').forEach((d,j)=>d.classList.toggle('on',j===i));
+  phases.querySelectorAll('.phase').forEach(b=>b.classList.toggle('on',b.textContent===tips[i].ph));
+  $('#slideNo').textContent=String(i+1).padStart(2,'0')+' / '+tips.length;cur=i;
+}
+$('#prevBtn').onclick=()=>go(cur-1);$('#nextBtn').onclick=()=>go(cur+1);
+let sx=null;deck.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+deck.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));sx=null});
+document.addEventListener('keydown',e=>{const r=deck.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)}});
+go(0);fitDeck();addEventListener('resize',fitDeck);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitDeck);
+
+/* ---------- checklist ---------- */
+const groups=[
+ ['Analisis',['Pertanyaan inti kasus udah jelas dan disepakati','Issue tree udah MECE','Semua angka penting ada sumbernya','Framework di lampiran punya insight ("so what")','Perhitungan finansial dan asumsinya transparan']],
+ ['Penulisan',['Rekomendasi utama ada di paragraf awal','Alur masalah, solusi, dampak, implementasi nyambung','Visual dan format lampiran konsisten','Batas halaman dan format sesuai guideline']],
+ ['Final',['Proofread bareng udah dilakuin','Angka di isi dan lampiran udah sama','File dan nama file sesuai aturan','Submit sebelum deadline!']]
+];
+const ckState=store.get('bcc_ck',{});const ckList=$('#ckList');let total=0;
+groups.forEach(([g,items],gi)=>{
+  const wrap=document.createElement('div');wrap.className='ckGroup';wrap.innerHTML=`<h4>${g}</h4>`;
+  items.forEach((it,ii)=>{total++;const id=gi+'-'+ii;const el=document.createElement('div');el.className='ck'+(ckState[id]?' done':'');el.setAttribute('role','checkbox');el.tabIndex=0;el.setAttribute('aria-checked',!!ckState[id]);
+    el.innerHTML=`<span class="box"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6" stroke="#06281f" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="t">${it}</span>`;
+    const tog=()=>{ckState[id]=!ckState[id];el.classList.toggle('done',ckState[id]);el.setAttribute('aria-checked',ckState[id]);store.set('bcc_ck',ckState);updRing(true,el)};
+    el.onclick=tog;el.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();tog()}};
+    wrap.appendChild(el)});
+  ckList.appendChild(wrap);
+});
+let wasFull=false;
+function updRing(user,el){
+  const done=Object.values(ckState).filter(Boolean).length;const p=done/total;
+  $('#ringArc').style.strokeDashoffset=314.16*(1-p);$('#pctTxt').textContent=Math.round(p*100)+'%';$('#cntTxt').textContent=done+'/'+total;
+  const msg=p===0?'Ayo mulai dari yang paling gampang dulu.':p<.5?'Udah jalan, pertahankan ritmenya!':p<.85?'Setengah jalan lebih, keren banget kalian.':p<1?'Dikit lagi! Jangan kendor sekarang.':'Semua beres! Tinggal submit dan istirahat yang bener.';
+  $('#ringMsg').textContent=msg;
+  if(user&&p===1&&!wasFull){burst(200);toast('Checklist 100%! Kalian keren banget')}
+  else if(user&&el&&el.classList.contains('done')){const r=el.getBoundingClientRect();burst(18,r.left+20,r.top+r.height/2)}
+  wasFull=p===1;
+}
+updRing(false);
+$('#resetCk').onclick=()=>{Object.keys(ckState).forEach(k=>delete ckState[k]);store.set('bcc_ck',ckState);document.querySelectorAll('.ck').forEach(e=>{e.classList.remove('done');e.setAttribute('aria-checked','false')});updRing(false);toast('Checklist di-reset')};
+const dl=$('#dl');dl.value=store.get('bcc_dl','');
+dl.addEventListener('change',()=>{store.set('bcc_dl',dl.value);tick()});
+function tick(){
+  const set=(d,h,m,s)=>{$('#cdD').textContent=d;$('#cdH').textContent=h;$('#cdM').textContent=m;$('#cdS').textContent=s};
+  if(!dl.value){set('--','--','--','--');return}
+  let ms=new Date(dl.value).getTime()-Date.now();
+  if(isNaN(ms)){set('--','--','--','--');return}
+  if(ms<=0){set('0','0','0','0');return}
+  const s=Math.floor(ms/1000);set(Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60);
+}
+tick();setInterval(tick,1000);
+
+/* ---------- pill quotes ---------- */
+const quotes=[
+ 'Abstrak yang bagus itu bukan yang paling panjang, tapi yang paling jelas. Kalian bisa.',
+ 'Satu insight yang tajam lebih kuat dari sepuluh tabel yang cuma rame.',
+ 'Capek itu tanda kalian lagi berusaha, bukan tanda kalian harus berhenti.',
+ 'Issue tree udah, data udah, tinggal ceritain dengan yakin.',
+ 'Juri juga manusia. Bikin mereka gampang ngerti, mereka bakal ingat kalian.',
+ 'Progress kecil tiap jam itu tetap progress. Gas pelan-pelan tapi jalan.',
+ 'Kalian nggak harus sempurna, kalian cuma harus lebih baik dari draft kemarin.',
+ 'Answer first, detail belakangan. Hidup juga gitu kadang.',
+ 'Minum air dulu. Serius. Abis itu lanjut lagi.',
+ 'Kerja tim yang solid itu keunggulan kompetitif yang susah ditiru.',
+ 'Ingat kenapa kalian ikut lomba ini. Itu bahan bakar paling ampuh.',
+ 'Apa pun hasilnya, ilmu dan pengalaman dari kasus ini punya kalian selamanya.',
+ 'Nggak apa-apa revisi berkali-kali. Konsultan beneran juga gitu.',
+ 'Tidur 20 menit kadang lebih produktif dari 2 jam melototin layar.',
+ 'Kalian udah sampai sini. Itu udah bukti kalian mampu.'
+];
+const doses=['Aturan pakai: 1 kapsul sebelum lanjut nulis.','Aturan pakai: diminum bareng teh atau kopi.','Aturan pakai: dibaca keras-keras ke tim.','Aturan pakai: ulangi kalau mulai ngantuk.','Efek samping: senyum tiba-tiba.'];
+const pillColors=[['#2fd3b5','#ffc35a'],['#a99bff','#eaf3fb'],['#ff7a6b','#ffc35a'],['#2fd3b5','#a99bff']];
+let qi=-1,taken=0;
+$('#pillBtn').onclick=()=>{
+  const b=$('#bottle'),pl=$('#pillShape'),q=$('#quote');
+  b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  pl.classList.remove('pop');q.style.opacity=0;
+  let n;do{n=Math.floor(Math.random()*quotes.length)}while(n===qi&&quotes.length>1);qi=n;
+  const c=pillColors[taken%pillColors.length];pl.children[0].style.background=c[0];pl.children[1].style.background=c[1];
+  setTimeout(()=>{pl.classList.add('pop');q.textContent=quotes[qi];q.style.opacity=1;taken++;
+    $('#dose').textContent=doses[taken%doses.length]+'  (kapsul ke-'+taken+')';
+    if(taken%5===0){burst(80);toast(taken+' kapsul! Semangat kalian udah overdosis')}},420);
+};
+$('#copyBtn').onclick=()=>{
+  const txt=(qi>=0?quotes[qi]:quotes[0])+' Semangat Daffa Ikbar & tim BCC!!';
+  const done=()=>toast('Tersalin, tinggal paste ke grup');
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(done).catch(()=>fallback(txt,done))}else fallback(txt,done);
+};
+function fallback(t,cb){const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');cb()}catch(e){toast('Gagal salin, copy manual ya')}a.remove()}
+
+/* ---------- mini game ---------- */
+const good=['Data bersumber','Insight tajam','Answer first','MECE','Angka konsisten','Visual rapi','So what?','Roadmap jelas','Mitigasi risiko','Kerja tim'];
+const bad=['Typo','Tanpa sumber','Lewat halaman','Asumsi ngawang','Font beda-beda','Framework pajangan','Deadline mepet'];
+const arena=$('#arena');let score=0,timeLeft=25,running=false,drops=[],spawnT=null,timerT=null,last=0,elapsed=0,bestScore=store.get('bcc_best',0);
+$('#best').textContent=bestScore;
+function spawn(){
+  if(!running)return;
+  const isGood=Math.random()<.65;const el=document.createElement('div');
+  el.className='drop '+(isGood?'good':'bad');el.textContent=isGood?good[Math.floor(Math.random()*good.length)]:bad[Math.floor(Math.random()*bad.length)];
+  arena.appendChild(el);
+  const w=el.offsetWidth;const x=Math.random()*Math.max(1,arena.clientWidth-w-8)+4;el.style.left=x+'px';
+  const d={el,y:-40,v:(70+elapsed*4.5+Math.random()*40),good:isGood,dead:false};drops.push(d);
+  const hit=e=>{e.preventDefault();if(d.dead||!running)return;d.dead=true;
+    score+=isGood?1:-2;$('#score').textContent=score;
+    floatTxt(isGood?'+1':'-2',x+w/2,d.y,isGood?'#2fd3b5':'#ff7a6b');
+    el.classList.add('hit');el.style.transform=`translateY(${d.y}px) scale(1.4)`;setTimeout(()=>el.remove(),260);
+    if(navigator.vibrate&&!isGood){try{navigator.vibrate(40)}catch(_){}}
+  };
+  el.addEventListener('pointerdown',hit);
+  spawnT=setTimeout(spawn,Math.max(300,850-elapsed*22));
+}
+function floatTxt(t,x,y,c){const f=document.createElement('div');f.className='float';f.textContent=t;f.style.left=x+'px';f.style.top=Math.max(10,y)+'px';f.style.color=c;arena.appendChild(f);setTimeout(()=>f.remove(),800)}
+function frame(ts){
+  if(!running)return;const dt=Math.min(.05,(ts-last)/1000);last=ts;
+  const H=arena.clientHeight;
+  drops.forEach(d=>{if(d.dead)return;d.y+=d.v*dt;d.el.style.transform=`translateY(${d.y}px)`;if(d.y>H+10){d.dead=true;d.el.remove()}});
+  drops=drops.filter(d=>!d.dead||d.el.isConnected);
+  requestAnimationFrame(frame);
+}
+function start(){
+  drops.forEach(d=>d.el.remove());drops=[];score=0;timeLeft=25;elapsed=0;$('#score').textContent=0;$('#time').textContent=25;
+  $('#overlay').style.display='none';running=true;last=performance.now();requestAnimationFrame(frame);spawn();
+  timerT=setInterval(()=>{timeLeft--;elapsed++;$('#time').textContent=timeLeft;if(timeLeft<=0)end()},1000);
+}
+function end(){
+  running=false;clearTimeout(spawnT);clearInterval(timerT);
+  setTimeout(()=>{drops.forEach(d=>d.el.remove());drops=[]},300);
+  const nb=score>bestScore;if(nb){bestScore=score;store.set('bcc_best',score);$('#best').textContent=score}
+  const verdict=score>=20?'Level partner konsultan. Abstrak kalian aman di tangan kalian.':score>=12?'Mantap! Mata kalian udah terlatih nyari yang penting.':score>=5?'Lumayan! Kayak abstrak, makin diulang makin rapi.':'Nggak apa-apa, yang penting otaknya udah istirahat bentar.';
+  $('#ovTitle').textContent='Skor: '+score+(nb?' (rekor baru!)':'');$('#ovText').textContent=verdict;$('#startBtn').textContent='Main lagi';
+  $('#overlay').style.display='flex';if(nb&&score>0)burst(120);
+}
+$('#startBtn').onclick=start;
+
+/* breathing */
+let bOn=false,bT=null,bCount=0;
+$('#breathBtn').onclick=()=>{
+  const c=$('#bCircle'),btn=$('#breathBtn');
+  if(bOn){bOn=false;clearInterval(bT);c.classList.remove('inhale');c.innerHTML='tarik<br>napas';btn.textContent='Mulai napas';$('#bTxt').textContent='Oke, kapan pun butuh, balik ke sini ya.';return}
+  bOn=true;bCount=0;btn.textContent='Berhenti';
+  const cyc=()=>{const inh=bCount%2===0;c.classList.toggle('inhale',inh);c.innerHTML=inh?'tarik<br>napas':'buang<br>pelan';bCount++;
+    $('#bTxt').textContent=inh?'Tarik napas pelan lewat hidung...':'Buang pelan lewat mulut. Bahunya diturunin.';
+    if(bCount>=16){bOn=false;clearInterval(bT);setTimeout(()=>{c.classList.remove('inhale');c.innerHTML='udah<br>lega?';btn.textContent='Ulangi';$('#bTxt').textContent='Sip. Sekarang minum air, terus lanjut nulis dengan kepala lebih jernih.'},4000)}};
+  cyc();bT=setInterval(cyc,4000);
+};
+
+/* final */
+$('#finalBtn').onclick=e=>{burst(220,e.clientX,e.clientY);setTimeout(()=>burst(120),250);toast('Gas! Semoga lolos dan menang')};
+
+/* ---------- scroll stuff ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const secs=['hero','tips','check','pill','game','closing'].map(id=>document.getElementById(id));const nd=[...document.querySelectorAll('#navdots a')];
+function onScroll(){
+  const h=document.documentElement;$('#scrollbar').style.width=(h.scrollTop/Math.max(1,h.scrollHeight-h.clientHeight)*100)+'%';
+  let idx=0;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<innerHeight*.45)idx=i});nd.forEach((a,i)=>a.classList.toggle('on',i===idx));
+}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body>
+</html>
